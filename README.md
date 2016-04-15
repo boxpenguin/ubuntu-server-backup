@@ -1,2 +1,2 @@
 # ubuntu-server-backup
-A simple weekly backup script for performing some key processes - update plexmedia server, backup key files and clean caches.
+A simple weekly backup script for performing some key processes - update plexmedia server, backup key files and clean caches. In addition this will be cleaned up and made configurable via a simple file left in /opt/ubuntu-server-backup where this file will live. I have a forked version of the plexupdate script from the lovely mrworf (https://github.com/mrworf/plexupdate). This is all experiemental to better myself with github commits. Please leave a comment if you think there is something I can improve upon. 
