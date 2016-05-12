@@ -101,7 +101,7 @@ echo ""
 
 echo "-----------------------------------------------------------------------------------------"
 echo "----------------------------------Restore Crons------------------------------------------"
-/usr/bin/crontab -u root /home/clara/tools/cron
+/usr/bin/crontab -u root /opt/ubuntu-server-backup/cron
 /usr/bin/crontab -l -u root
 
 echo "-------------------------------------Complete--------------------------------------------"
