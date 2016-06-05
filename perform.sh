@@ -25,7 +25,7 @@ perform_plex () {
     # run plexwatching
     "watching") /opt/plexWatch/plexWatch.pl --watching ;;
     # update
-    "update") /opt/ubuntu-server-backup/plexupdate.sh -a ;;
+    "update") /bin/bash /opt/ubuntu-server-backup/plexupdate.sh -a ;;
     # start
     "start") /sbin/start plexmediaserver ;;
     # stop
