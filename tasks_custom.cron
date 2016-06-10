@@ -1,4 +1,4 @@
-##This is for /etc/cron.d/task_custom
+# This is for /etc/cron.d/task_custom to run the backup via a cron this might also be branched out or setup as a creator for cron perfences.
 MAILTO="clara@clara-tan.home"
-5 8 * * 0       root    /bin/sh /opt/ubuntu-server-backup/perform.sh                    #Sunday 08:05am maintenance see /home/clara/tools/sunday.sh
+5 8 * * 0       root    /bin/sh /opt/ubuntu-server-backup/perform.sh --backup0                   #Sunday 08:05am maintenance see /home/clara/tools/sunday.sh
 20 8 15 * *     root    /bin/sh /home/clara/tools/diskstats.sh                    #15th Disk stats see /home/clara/tools/diskstats
