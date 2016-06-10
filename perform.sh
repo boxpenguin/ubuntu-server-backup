@@ -130,11 +130,15 @@ case $1 in
   perform_apt_getup
   perform_apt_getclean
   ;;
+  "--yikes" | "-y")
+  telnet towel.blinkenlights.nl
+  ;;
   "")
   echo "--full; performs full backup and ubuntu updates"
   echo "--plex-update; DRYRUN - updates plex"
   echo "--plex-update0; updates plex"
   echo "--backup-only; only performs update, clears previous data"
   echo "--apt-get-up; performs apt-get updates and cleans up"
+  echo "--yikes, -y; I dunno maybe it does a thing?"
 
 esac
