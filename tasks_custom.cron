@@ -1,4 +1,9 @@
-# This is for /etc/cron.d/task_custom to run the backup via a cron this might also be branched out or setup as a creator for cron perfences.
 MAILTO="clara@clara-tan.home"
-5 8 * * 0       root    /bin/sh /opt/ubuntu-server-backup/perform.sh --backup0                   #Sunday 08:05am maintenance see /home/clara/tools/sunday.sh
-20 8 15 * *     root    /bin/sh /home/clara/tools/diskstats.sh                    #15th Disk stats see /home/clara/tools/diskstats
+* * * * *	root	/bin/sh /opt/tools/cpustats.sh | /usr/bin/aha --title "Temps" > /var/www/html/_admin/temp.html
+30 8 * * 0	root	/bin/cat /home/clara/Backups/1-* | /usr/bin/aha --title "Storage Summary" > /var/www/html/_admin/storage.html
+5 8 * * 0	root	/bin/sh /opt/ubuntu-server-backup/perform.sh --full			#Sunday 08:05am maintenance see /home/clara/tools/sunday.sh
+20 8 15 * * 	root	/bin/sh	/home/clara/tools/diskstats.sh			  #15th Disk stats see /home/clara/tools/diskstats
+@reboot	root	/bin/sh /home/clara/tools/apcupsd_restore_script.sh	#Restore defaults
+@reboot	root	/sbin/sysctl -w vm.block_dump=0	#ensures block_dump is turned off after reboot
+@reboot	root	screen -dmS Sakuranbo-CherryMusic /usr/bin/python /var/www/html/music/cherrymusic/cherrymusic --port 8080
+
