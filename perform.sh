@@ -22,10 +22,13 @@ perform_crontab () {
 # plexserver Controls
 perform_plex () {
   case $1 in
+<<<<<<< HEAD
+=======
     # run plexwatching
     "watching") /opt/plexWatch/plexWatch.pl --watching ;;
     # update
     "update") /bin/bash /opt/ubuntu-server-backup/plexupdate.sh -a ;;
+>>>>>>> 307f8931159c6330170c99e82697ba2328aaa802
     # start
     "start") /sbin/start plexmediaserver ;;
     # stop
@@ -39,6 +42,21 @@ rm -rf /home/clara/Backups/1-* > /dev/null 2>&1
 rm -rf /home/clara/Backups/2-* > /dev/null 2>&1
 rm -rf /home/clara/Backups/3-* > /dev/null 2>&1
 }
+<<<<<<< HEAD
+
+# Fill with null data
+perform_fill () {
+  echo "" >> /home/clara/Backups/1-Diskspace-$(date +\%F)
+}
+# Create Disk information
+perform_createdata () {
+perform_deletedata
+
+touch /home/clara/Backups/1-Diskspace-$(date +\%F)
+
+df -m | grep -v none > /home/clara/Backups/1-Diskspace-$(date +\%F)
+
+=======
 
 # Fill with null data
 perform_fill () {
@@ -52,6 +70,7 @@ touch /home/clara/Backups/1-Diskspace-$(date +\%F)
 
 df -h | grep -v none > /home/clara/Backups/1-Diskspace-$(date +\%F)
 
+>>>>>>> 307f8931159c6330170c99e82697ba2328aaa802
 perform_fill
 du -shBM /*/ | sort -h >> /home/clara/Backups/1-Diskspace-$(date +\%F)
 
@@ -81,7 +100,11 @@ perform_ncdu () {
 
 # Backup Script
 perform_backup () {
+<<<<<<< HEAD
+tar cfh - /home/clara/Backups/ /home/clara/tools /opt/ | pigz --best > "/media/GRANOLA/Backups-Muffin/Clara-tan.home/Clara-tan_core/Clara-tan_core-$(date +\%F).tar.gz"
+=======
 tar cfh - /home/clara/Backups/ /home/clara/tools | pigz --best > "/media/GRANOLA/Backups-Muffin/Clara-tan.home/Clara-tan_core/Clara-tan_core-$(date +\%F).tar.gz"
+>>>>>>> 307f8931159c6330170c99e82697ba2328aaa802
 /bin/ls -ash "/media/GRANOLA/Backups-Muffin/Clara-tan.home/Clara-tan_core/Clara-tan_core-$(date +\%F).tar.gz"
 /usr/bin/sha256sum "/media/GRANOLA/Backups-Muffin/Clara-tan.home/Clara-tan_core/Clara-tan_core-$(date +\%F).tar.gz" > "/media/GRANOLA/Backups-Muffin/Clara-tan.home/Clara-tan_core/Clara-tan_core-$(date +\%F).tar.gz.sha256"
 /usr/bin/sha256sum -c "/media/GRANOLA/Backups-Muffin/Clara-tan.home/Clara-tan_core/Clara-tan_core-$(date +\%F).tar.gz.sha256"
@@ -89,8 +112,15 @@ tar cfh - /home/clara/Backups/ /home/clara/tools | pigz --best > "/media/GRANOLA
 
 # apt-get upgrade
 perform_apt_getup () {
+<<<<<<< HEAD
+service pgl stop
 sudo /usr/bin/apt-get update > /dev/null 2>&1
 sudo /usr/bin/apt-get -yq upgrade
+service pgl start
+=======
+sudo /usr/bin/apt-get update > /dev/null 2>&1
+sudo /usr/bin/apt-get -yq upgrade
+>>>>>>> 307f8931159c6330170c99e82697ba2328aaa802
 }
 
 # apt-get clean up
@@ -107,12 +137,18 @@ case $1 in
   perform_createdata
   perform_ncdu
   perform_backup
+<<<<<<< HEAD
+=======
   perform_plex update
+>>>>>>> 307f8931159c6330170c99e82697ba2328aaa802
   perform_plex start
   perform_apt_getup
   perform_apt_getclean
   perform_crontab load
   ;;
+<<<<<<< HEAD
+  "--backup")
+=======
   "--plex-update")
   perform_plex watching
   ;;
@@ -122,6 +158,7 @@ case $1 in
   perform_plex start
   ;;
   "--backup-only")
+>>>>>>> 307f8931159c6330170c99e82697ba2328aaa802
   perform_createdata
   perform_ncdu
   perform_backup
@@ -130,6 +167,13 @@ case $1 in
   perform_apt_getup
   perform_apt_getclean
   ;;
+<<<<<<< HEAD
+  "")
+  echo "--full; performs full backup and ubuntu updates"
+  echo "--backup; only performs update, clears previous data"
+  echo "--apt-get-up; performs apt-get updates and cleans up"
+  ;;
+=======
   "--yikes" | "-y")
   telnet towel.blinkenlights.nl
   ;;
@@ -141,4 +185,5 @@ case $1 in
   echo "--apt-get-up; performs apt-get updates and cleans up"
   echo "--yikes, -y; I dunno maybe it does a thing?"
 
+>>>>>>> 307f8931159c6330170c99e82697ba2328aaa802
 esac
