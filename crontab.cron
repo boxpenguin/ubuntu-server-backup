@@ -1,5 +1,2 @@
-# This is only nesscary for plexwatch and custom sync script I use. Might need to create a custom creator? Ask Beau and Bill opinions
-
 MAILTO="clara@clara-tan.home"
-* * * * *       /opt/plexWatch/plexWatch.pl                                             #Plex Watch
 0,30 * * * *    /bin/sh /opt/synctorrents/synctorrents.sh >> /var/log/synctorrents/synctorrents_cron.log 2&>1
