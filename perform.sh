@@ -137,4 +137,5 @@ case $1 in
   ;;
   "--test")
   perform_createdata
+  ;;
 esac
