@@ -129,7 +129,6 @@ case $1 in
   perform_apt_getup
   perform_apt_getclean
   ;;
-  ;;
   "--test")
   perform_createdata
   ;;
