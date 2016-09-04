@@ -129,13 +129,14 @@ case $1 in
   perform_apt_getup
   perform_apt_getclean
   ;;
+  ;;
+  "--test")
+  perform_createdata
+  ;;
   "")
   echo "--full; performs full backup and ubuntu updates"
   echo "--backup; only performs update, clears previous data"
   echo "--apt-get-up; performs apt-get updates and cleans up"
   echo "--test; whatever Jordan decides"
-  ;;
-  "--test")
-  perform_createdata
   ;;
 esac
