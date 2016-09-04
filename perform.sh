@@ -61,23 +61,23 @@ perform_createdata () {
   du -shBM /media/MOCHI/*/ | sort -h >> /home/clara/Backups/1-Diskspace-$(date +\%F)
   perform_fill
   du -shBM /media/GRANOLA/*/ | sort -h >> /home/clara/Backups/1-Diskspace-$(date +\%F)
-  # Create weekly hard drive tests
-  # touch $FILE
-  # if [ -e $FILE ]
-  # then
-  #   echo "Running disk stats"
-  #   echo "Printing disk stats." >> $FILE
-  #   for i in a b c d e f; do
-  #     mount | grep sd$i | awk '{print $1, $2, $3}' >> $$FILE
-  #     /sbin/hdparm -Tt /dev/sd$i >> $FILE
-  #     echo "" >> $FILE
-  #   done
-  #   echo "END" >> $FILE
-  #   cat $FILE | /usr/bin/aha --title "Disk Stats" > $FILE.html
-  #   rm $FILE
-  # else
-  #   echo "File already exists."
-  # fi
+  Create weekly hard drive tests
+  touch $FILE
+  if [ -e $FILE ]
+  then
+    echo "Running disk stats"
+    echo "Printing disk stats." >> $FILE
+    for i in a b c d e f; do
+      mount | grep sd$i | awk '{print $1, $2, $3}' >> $$FILE
+      /sbin/hdparm -Tt /dev/sd$i >> $FILE
+      echo "" >> $FILE
+    done
+    echo "END" >> $FILE
+    cat $FILE | /usr/bin/aha --title "Disk Stats" > $FILE.html
+    rm $FILE
+  else
+    echo "File already exists."
+  fi
 }
 
 # NCDU Controls
