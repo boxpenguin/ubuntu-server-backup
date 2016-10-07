@@ -1,0 +1,37 @@
+# TODO list for newer version
+What does this script do?
+1. Backup /home/clara /opt to /media/GRANOLA/Backups-Muffin/Clara-tan.home/Clara-tan_core/Clara-tan_core-$(date +\%F).tar.gz
+  a. Store on local HDD
+  b. Have Checksum ran against
+2. Run disk stats on the following locations
+  a. TV Shows
+    /media/DANISH/Media/TV Shows/
+  b. Movies
+    /media/ECLAIR/Movies/
+  c. Anime
+    /media/ECLAIR/Anime/
+    /media/MOCHI/Anime/
+  d. Special Libraries
+    /media/DANISH/Media/Special Libraries/
+  e. Clara
+    /home/clara
+  f. Plex Server
+    /var/lib/plexmediaserver/
+  g. Music
+    /media/DANISH/Media/Music/
+  h. Backups
+    /media/GRANOLA/Backups-Muffin/
+  i. Media
+    /media/
+  j. DANISH
+    /media/DANISH
+  k. ECLAIR
+    /media/ECLAIR
+  l. GRANOLA
+    /media/GRANOLA
+  m. MOCHI
+    /media/MOCHI
+3. Run disk performance checks as well
+4. Run a NCDU for archival purposes on /
+5. Perform APT-GET update, upgrade
+6. Perform APT-GET cleanup
