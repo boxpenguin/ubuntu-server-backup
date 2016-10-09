@@ -3,7 +3,7 @@ What does this script do?
 1. Backup /home/clara /opt to /media/GRANOLA/Backups-Muffin/Clara-tan.home/Clara-tan_core/Clara-tan_core-$(date +\%F).tar.gz
   a. Store on local HDD
   b. Have Checksum ran against
-2. Run disk stats on the following locations
+2. DONE Run disk stats on the following locations
   a. TV Shows
     /media/DANISH/Media/TV Shows/
   b. Movies
