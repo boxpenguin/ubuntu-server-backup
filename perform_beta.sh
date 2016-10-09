@@ -8,7 +8,7 @@ DISK_STAT_DIR_HARD=/home/clara/
 # Indicate where you would like your web(HTML) Disk performance stats kept (directory)
 DISK_PERF_DIR=/var/www/html/_admin/Diskstats/
 # Indicate where you would like to store your temp backup files (NCDU)
-BACKUP_DIR=/home/clara/Backup/
+BACKUP_DIR=/tmp/
 BACKUP_DEST_DIR=/media/GRANOLA/Backups-Muffin/Clara-tan.home/Clara-tan_core/
 BACKUP_SOURCE=( '' )
 # END USER defined
@@ -37,6 +37,7 @@ BACKUP_FILE=$(hostname)-$DATE.tar.gz
 BACKUP_FILE_SHA=$BACKUP_FILE.sha256
 BACKUP=$BACKUP_DIR$BACKUP_FILE
 BACKUP_SHA=$BACKUP_DIR$BACKUP_FILE_SHA
+echo "" > $BACKUP
 
 # Pre-script work
 prework () {
@@ -79,7 +80,7 @@ disk_perf () {
 # TODO
 # rework into user defined var
 ncdu () {
-  /usr/bin/ncdu / -x -o /home/clara/Backups/2-NCDU-$(date +\%F)
+  echo /usr/bin/ncdu / -x -o $BACKUP_DIR/3-NCDU-$DATE
 }
 
 # Backup Script TODO
@@ -89,7 +90,7 @@ ncdu () {
 # run checker for pigz during script installation or @ start up - investigate if worth it
 backup () {
   echo tar cfh - /home/clara/Backups/ /home/clara/tools /opt/ | pigz --best > "/media/GRANOLA/Backups-Muffin/Clara-tan.home/Clara-tan_core/Clara-tan_core-$(date +\%F).tar.gz"
-  echo tar cfh - /home/clara/Backups/ /home/clara/tools /opt/ | pigz --best > $BACKUP
+  echo tar cfh - ${BACKUP_SOURCE[@]} PIPE pigz --best  LT $BACKUP
   echo /bin/ls -ash "/media/GRANOLA/Backups-Muffin/Clara-tan.home/Clara-tan_core/Clara-tan_core-$(date +\%F).tar.gz"
   echo /bin/ls -ash $BACKUP
   echo /usr/bin/sha256sum "/media/GRANOLA/Backups-Muffin/Clara-tan.home/Clara-tan_core/Clara-tan_core-$(date +\%F).tar.gz" > "/media/GRANOLA/Backups-Muffin/Clara-tan.home/Clara-tan_core/Clara-tan_core-$(date +\%F).tar.gz.sha256"
@@ -141,6 +142,7 @@ case $1 in
   ;;
   "--test")
   backup
+  ncdu
   ;;
   "")
   echo "--full; performs full backup and ubuntu updates"
