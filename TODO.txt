@@ -31,7 +31,7 @@ What does this script do?
     /media/GRANOLA
   m. MOCHI
     /media/MOCHI
-3. Run disk performance checks as well
+3. DONE Run disk performance checks as well
 4. Run a NCDU for archival purposes on /
 5. Perform APT-GET update, upgrade
 6. Perform APT-GET cleanup
