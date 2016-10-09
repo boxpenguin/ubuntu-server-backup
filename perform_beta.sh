@@ -11,7 +11,7 @@ media_target=( '/media/DANISH/Media/TV*' '/media/ECLAIR/Movies/' '/media/ECLAIR/
 # disk_parm Variables
 DISKPERF_FILE=/tmp/2-Diskperf-$DATE
 DISKPERF_WEB="/var/www/html/_admin/Diskstats/Diskstats-"$DATE
-touch $DISKPERF_WEB # Creat temp diskperf file
+touch $DISKPERF_WEB # Create temp diskperf file
 
 disk_stat () {
   COUNTER=0
@@ -27,11 +27,13 @@ disk_stat () {
 disk_perf () {
   echo "Printing disk stats." >> $DISKPERF_WEB
   for i in $(mount | grep /dev/sd | awk '{print substr($1,1, length($1)-1)}' | uniq | sort); do
-    mount | grep sd$i | awk '{print $1, $2, $3}' >> $DISKPERF_WEB
-    /sbin/hdparm -Tt /dev/sd$i >> $DISKPERF_WEB
+    mount | grep $i | awk '{print $1, $2, $3}' >> $DISKPERF_WEB
     echo "" >> $DISKPERF_WEB
   done
   echo "END" >> $DISKPERF_WEB
   cat $DISKPERF_WEB | /usr/bin/aha --title "Disk Performance" > $DISKPERF_WEB.html
   rm $DISKPERF_WEB
 }
+
+disk_stat
+disk_perf
