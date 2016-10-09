@@ -9,6 +9,8 @@ DISK_STAT_DIR_HARD=/home/clara/
 DISK_PERF_DIR=/var/www/html/_admin/Diskstats/
 # Indicate where you would like to store your temp backup files (NCDU)
 BACKUP_DIR=/home/clara/Backup/
+BACKUP_DEST_DIR=/media/GRANOLA/Backups-Muffin/Clara-tan.home/Clara-tan_core/
+BACKUP_SOURCE=( '' )
 # END USER defined
 
 # Global Variables
@@ -86,10 +88,16 @@ ncdu () {
 # Link everything to user defined Variables
 # run checker for pigz during script installation or @ start up - investigate if worth it
 backup () {
-  tar cfh - /home/clara/Backups/ /home/clara/tools /opt/ | pigz --best > "/media/GRANOLA/Backups-Muffin/Clara-tan.home/Clara-tan_core/Clara-tan_core-$(date +\%F).tar.gz"
-  /bin/ls -ash "/media/GRANOLA/Backups-Muffin/Clara-tan.home/Clara-tan_core/Clara-tan_core-$(date +\%F).tar.gz"
-  /usr/bin/sha256sum "/media/GRANOLA/Backups-Muffin/Clara-tan.home/Clara-tan_core/Clara-tan_core-$(date +\%F).tar.gz" > "/media/GRANOLA/Backups-Muffin/Clara-tan.home/Clara-tan_core/Clara-tan_core-$(date +\%F).tar.gz.sha256"
-  /usr/bin/sha256sum -c "/media/GRANOLA/Backups-Muffin/Clara-tan.home/Clara-tan_core/Clara-tan_core-$(date +\%F).tar.gz.sha256"
+  echo tar cfh - /home/clara/Backups/ /home/clara/tools /opt/ | pigz --best > "/media/GRANOLA/Backups-Muffin/Clara-tan.home/Clara-tan_core/Clara-tan_core-$(date +\%F).tar.gz"
+  echo tar cfh - /home/clara/Backups/ /home/clara/tools /opt/ | pigz --best > $BACKUP
+  echo /bin/ls -ash "/media/GRANOLA/Backups-Muffin/Clara-tan.home/Clara-tan_core/Clara-tan_core-$(date +\%F).tar.gz"
+  echo /bin/ls -ash $BACKUP
+  echo /usr/bin/sha256sum "/media/GRANOLA/Backups-Muffin/Clara-tan.home/Clara-tan_core/Clara-tan_core-$(date +\%F).tar.gz" > "/media/GRANOLA/Backups-Muffin/Clara-tan.home/Clara-tan_core/Clara-tan_core-$(date +\%F).tar.gz.sha256"
+  echo /usr/bin/sha256sum $BACKUP > $BACKUP_SHA
+  echo /usr/bin/sha256sum -c "/media/GRANOLA/Backups-Muffin/Clara-tan.home/Clara-tan_core/Clara-tan_core-$(date +\%F).tar.gz.sha256"
+  echo /usr/bin/sha256sum -c $BACKUP_SHA
+  echo rsync -avp --progress $BACKUP $BACKUP_SHA $BACKUP_DEST_DIR
+  echo rm -rf $BACKUP $BACKUP_SHA
 }
 
 # apt-get upgrade TODO
@@ -132,7 +140,7 @@ case $1 in
   postwork
   ;;
   "--test")
-  echo "Nothing set"
+  backup
   ;;
   "")
   echo "--full; performs full backup and ubuntu updates"
