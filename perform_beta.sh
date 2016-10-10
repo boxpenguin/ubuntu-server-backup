@@ -2,15 +2,16 @@
 
 # User defined controls
 # Indicate where you would like your web(HTML) Disk storage stats kept (directory)
-DISK_STAT_DIR_WEB=/var/www/html/_admin/
-# Indicate where you would like your hard copy Disk storage stats kept (directory)
-DISK_STAT_DIR_HARD=/home/clara/
+DISK_STAT_DIR_WEB=/var/www/html/_admin/Disk_Storage/
+DISK_STAT_WEB_FILE_NAME="Diskstorage"
 # Indicate where you would like your web(HTML) Disk performance stats kept (directory)
-DISK_PERF_DIR=/var/www/html/_admin/Diskstats/
+DISK_PERF_DIR_WEB=/var/www/html/_admin/Diskstats/
+DISK_PERF_WEB_FILE_NAME="Diskstats"
 # Indicate where you would like to store your temp backup files (NCDU)
-BACKUP_DIR=/tmp/
+BACKUP_DIR=/var/Backup/
+BACKUP_DIR_TEMP=/tmp/
 BACKUP_DEST_DIR=/media/GRANOLA/Backups-Muffin/Clara-tan.home/Clara-tan_core/
-BACKUP_SOURCE=( '' )
+BACKUP_SOURCE=( '/home/clara/' '/opt/' )
 # END USER defined
 
 # Global Variables
@@ -22,22 +23,26 @@ METALINUXPKG="linux-(image|headers|restricted-modules)-(generic|i386|server|comm
 OLDKERNELS=$(dpkg -l|awk '{print $2}'|grep -E $LINUXPKG |grep -vE $METALINUXPKG|grep -v $CURKERNEL)
 
 # disk_stat variables TODO setup and test for user defined controls
-DISKSTAT_FILE=/tmp/1-Diskspace-$DATE  # Goes into /home when ready TODO
-DISKSTAT_WEB=/var/www/html/_admin/storage.html
+DISKSTAT_FILE=$BACKUP_DIR/1-Diskspace-$DATE
+DISKSTAT_WEB=$DISK_STAT_DIR_WEB/$DISK_STAT_WEB_FILE_NAME-$DATE.html
 echo "" > $DISKSTAT_FILE
 media_target=( '/media/DANISH/Media/TV*' '/media/ECLAIR/Movies/' '/media/ECLAIR/Anime/' '/media/DANISH/Media/Special*' '/home/clara/' '/var/lib/plexmediaserver/' '/media/DANISH/Media/Music/' '/media/GRANOLA/Backups-Muffin/' '/media/' '/media/DANISH/' '/media/ECLAIR/' '/media/GRANOLA/' '/media/MOCHI/' )
 
 # disk_perf Variables
-DISKPERF_FILE=/tmp/2-Diskperf-$DATE
-DISKPERF_WEB="/var/www/html/_admin/Diskstats/Diskstats-"$DATE
+DISKPERF_FILE=$BACKUP_DIR/2-Diskperf-$DATE
+DISKPERF_WEB=$DISK_PERF_DIR_WEB/$DISK_PERF_WEB_FILE_NAME-$DATE.html
 echo "" > $DISKPERF_WEB
 
 # backup Variables
 BACKUP_FILE=$(hostname)-$DATE.tar.gz
 BACKUP_FILE_SHA=$BACKUP_FILE.sha256
-BACKUP=$BACKUP_DIR$BACKUP_FILE
-BACKUP_SHA=$BACKUP_DIR$BACKUP_FILE_SHA
+BACKUP=$BACKUP_DIR_TEMP/$BACKUP_FILE
+BACKUP_SHA=$BACKUP_DIR_TEMP/$BACKUP_FILE_SHA
 echo "" > $BACKUP
+mkdir $BACKUP_DIR # Creates Backup Directory
+
+# NCDU Variables
+NCDU_FILE=3-NCDU-$DATE
 
 # Pre-script work
 prework () {
@@ -51,6 +56,14 @@ postwork () {
   /usr/bin/crontab -u root /opt/ubuntu-server-backup/crontab.cron
 }
 
+# Mr Worfs plex updater too required
+plex_upgrade () {
+  if [ -e /opt/plexupdate/plexupdate.sh ]; then
+    /opt/plexupdate/plexupdate.sh -p -u -a
+  else
+    echo "No Configuration file found"
+  fi
+}
 # Disk Storage Stats
 disk_stat () {
   COUNTER=0
@@ -76,33 +89,22 @@ disk_perf () {
   rm $DISKPERF_WEB
 }
 
-# NCDU export TODO
-# TODO
-# rework into user defined var
+# NCDU export to backup directories
 ncdu () {
-  echo /usr/bin/ncdu / -x -o $BACKUP_DIR/3-NCDU-$DATE
+  /usr/bin/ncdu / -x -o $BACKUP_DIR/$NCDU_FILE
 }
 
-# Backup Script TODO
-# TODO SWEET CHRISTMAS GOODLUCK REWRITING THIS. DONT DO IT DRUNK EITHER
-# Remove all hard code Variables
-# Link everything to user defined Variables
-# run checker for pigz during script installation or @ start up - investigate if worth it
+# Backup Func
 backup () {
-  echo tar cfh - /home/clara/Backups/ /home/clara/tools /opt/ | pigz --best > "/media/GRANOLA/Backups-Muffin/Clara-tan.home/Clara-tan_core/Clara-tan_core-$(date +\%F).tar.gz"
-  echo tar cfh - ${BACKUP_SOURCE[@]} PIPE pigz --best  LT $BACKUP
-  echo /bin/ls -ash "/media/GRANOLA/Backups-Muffin/Clara-tan.home/Clara-tan_core/Clara-tan_core-$(date +\%F).tar.gz"
+  echo tar cfh - $BACKUP_DIR ${BACKUP_SOURCE[@]} | pigz --best > $BACKUP
   echo /bin/ls -ash $BACKUP
-  echo /usr/bin/sha256sum "/media/GRANOLA/Backups-Muffin/Clara-tan.home/Clara-tan_core/Clara-tan_core-$(date +\%F).tar.gz" > "/media/GRANOLA/Backups-Muffin/Clara-tan.home/Clara-tan_core/Clara-tan_core-$(date +\%F).tar.gz.sha256"
   echo /usr/bin/sha256sum $BACKUP > $BACKUP_SHA
-  echo /usr/bin/sha256sum -c "/media/GRANOLA/Backups-Muffin/Clara-tan.home/Clara-tan_core/Clara-tan_core-$(date +\%F).tar.gz.sha256"
   echo /usr/bin/sha256sum -c $BACKUP_SHA
   echo rsync -avp --progress $BACKUP $BACKUP_SHA $BACKUP_DEST_DIR
   echo rm -rf $BACKUP $BACKUP_SHA
 }
 
-# apt-get upgrade TODO
-# TODO Personal check to see if apt-get can be configured to pull from a single source and that source's ip added to pgl
+# apt-get upgrade
 apt_get_up () {
   /usr/bin/apt-get update > /dev/null 2>&1
   /usr/bin/apt-get -yq upgrade
@@ -136,8 +138,8 @@ case $1 in
   ;;
   "--apt-get-up")
   prework
-  apt_getup
-  apt_getclean
+  apt_get_up
+  apt_get_clean
   postwork
   ;;
   "--test")
