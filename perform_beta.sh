@@ -10,7 +10,7 @@ DISK_PERF_DIR=/var/www/html/_admin/Diskstats/
 # Indicate where you would like to store your temp backup files (NCDU)
 BACKUP_DIR=/tmp/
 BACKUP_DEST_DIR=/media/GRANOLA/Backups-Muffin/Clara-tan.home/Clara-tan_core/
-BACKUP_SOURCE=( '' )
+BACKUP_SOURCE=( '/home/clara /opt' )
 # END USER defined
 
 # Global Variables
