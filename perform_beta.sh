@@ -39,7 +39,12 @@ BACKUP_FILE_SHA=$BACKUP_FILE.sha256
 BACKUP=$BACKUP_DIR_TEMP/$BACKUP_FILE
 BACKUP_SHA=$BACKUP_DIR_TEMP/$BACKUP_FILE_SHA
 echo "" > $BACKUP
-mkdir $BACKUP_DIR # Creates Backup Directory
+if [ -e $BACKUP_DIR ]; then
+  echo "Backup drive located: " $BACKUP_DIR
+else
+  echo "Unable to locate backup directory set as: "
+  mkdir $BACKUP_DIR # Creates Backup Directory
+fi
 
 # NCDU Variables
 NCDU_FILE=3-NCDU-$DATE
@@ -61,11 +66,12 @@ plex_upgrade () {
   if [ -e /opt/plexupdate/plexupdate.sh ]; then
     /opt/plexupdate/plexupdate.sh -p -u -a
   else
-    echo "No Configuration file found"
+    echo "No upgrade file found."
   fi
 }
 # Disk Storage Stats
 disk_stat () {
+  echo "Starting Disk stats" #debugging
   COUNTER=0
   while [ $COUNTER -lt ${#media_target[@]} ]; do
     X=" MB "
@@ -78,6 +84,7 @@ disk_stat () {
 
 # Disk Performance stats
 disk_perf () {
+  echo "Starting performance stats" #debugging
   echo "Printing disk stats." >> $DISKPERF_WEB
   for i in $(mount | grep /dev/sd | awk '{print substr($1,1, length($1)-1)}' | uniq | sort); do
     mount | grep $i | awk '{print $1, $2, $3}' >> $DISKPERF_WEB
@@ -91,11 +98,13 @@ disk_perf () {
 
 # NCDU export to backup directories
 ncdu () {
+  echo "Starting ncdu" #debugging
   /usr/bin/ncdu / -x -o $BACKUP_DIR/$NCDU_FILE
 }
 
 # Backup Func
 backup () {
+  echo "Starting backups" #debugging
   echo tar cfh - $BACKUP_DIR ${BACKUP_SOURCE[@]} | pigz --best > $BACKUP
   echo /bin/ls -ash $BACKUP
   echo /usr/bin/sha256sum $BACKUP > $BACKUP_SHA
@@ -106,12 +115,14 @@ backup () {
 
 # apt-get upgrade
 apt_get_up () {
+  echo "Starting apt-get updates" #debugging
   /usr/bin/apt-get update > /dev/null 2>&1
   /usr/bin/apt-get -yq upgrade
 }
 
 # apt-get clean up
 apt_get_clean () {
+  echo "Starting apt-get cleanup" #debugging
   aptitude clean
   aptitude -y purge $OLDCONF
   aptitude -y purge $OLDKERNELS
