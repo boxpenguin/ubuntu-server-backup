@@ -11,11 +11,7 @@ DISK_PERF_WEB_FILE_NAME="Diskstats"
 BACKUP_DIR=/var/Backup/
 BACKUP_DIR_TEMP=/tmp/
 BACKUP_DEST_DIR=/media/GRANOLA/Backups-Muffin/Clara-tan.home/Clara-tan_core/
-<<<<<<< HEAD
-BACKUP_SOURCE=( '/home/clara /opt' )
-=======
 BACKUP_SOURCE=( '/home/clara/' '/opt/' )
->>>>>>> origin/master
 # END USER defined
 
 # Global Variables
