@@ -5,7 +5,7 @@
 DISK_STAT_DIR_WEB=/var/www/html/_admin/Disk_Storage/
 DISK_STAT_WEB_FILE_NAME="Disk_storage"
 # Indicate where you would like your web(HTML) Disk performance stats kept (directory)
-DISK_PERF_DIR_WEB=/var/www/html/_admin/Diskstats/
+DISK_PERF_DIR_WEB=/var/www/html/_admin/Disk_Performance/
 DISK_PERF_WEB_FILE_NAME="Disk_performance"
 # Indicate where you would like to store your temp backup files (NCDU)
 BACKUP_DIR=/var/Backup/
@@ -155,6 +155,7 @@ case $1 in
   ;;
   "--test")
   disk_stat
+  disk_perf
   backup
   ;;
   "")
