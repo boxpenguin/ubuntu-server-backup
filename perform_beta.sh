@@ -143,8 +143,8 @@ case $1 in
   postwork
   ;;
   "--test")
+  disk_stat
   backup
-  ncdu
   ;;
   "")
   echo "--full; performs full backup and ubuntu updates"
