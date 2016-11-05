@@ -25,20 +25,20 @@ OLDKERNELS=$(dpkg -l|awk '{print $2}'|grep -E $LINUXPKG |grep -vE $METALINUXPKG|
 # disk_stat variables TODO setup and test for user defined controls
 DISKSTAT_FILE=$BACKUP_DIR/1-Diskspace-$DATE
 DISKSTAT_WEB=$DISK_STAT_DIR_WEB/$DISK_STAT_WEB_FILE_NAME-$DATE.html
-echo "" > $DISKSTAT_FILE
+#echo "" > $DISKSTAT_FILE #remove me later
 media_target=( '/media/DANISH/Media/TV*' '/media/ECLAIR/Movies/' '/media/ECLAIR/Anime/' '/media/DANISH/Media/Special*' '/home/clara/' '/var/lib/plexmediaserver/' '/media/DANISH/Media/Music/' '/media/GRANOLA/Backups-Muffin/' '/media/' '/media/DANISH/' '/media/ECLAIR/' '/media/GRANOLA/' '/media/MOCHI/' )
 
 # disk_perf Variables
 DISKPERF_FILE=$BACKUP_DIR/2-Diskperf-$DATE
 DISKPERF_WEB=$DISK_PERF_DIR_WEB/$DISK_PERF_WEB_FILE_NAME-$DATE.html
-echo "" > $DISKPERF_WEB
+#echo "" > $DISKPERF_WEB #remove me later
 
 # backup Variables
 BACKUP_FILE=$(hostname)-$DATE.tar.gz
 BACKUP_FILE_SHA=$BACKUP_FILE.sha256
 BACKUP=$BACKUP_DIR_TEMP/$BACKUP_FILE
 BACKUP_SHA=$BACKUP_DIR_TEMP/$BACKUP_FILE_SHA
-echo "" > $BACKUP
+#echo "" > $BACKUP #remove me later
 if [ -e $BACKUP_DIR ]; then
   echo "Backup drive located: " $BACKUP_DIR
 else
@@ -105,12 +105,12 @@ ncdu () {
 # Backup Func
 backup () {
   echo "Starting backups" #debugging
-  echo tar cfh - $BACKUP_DIR ${BACKUP_SOURCE[@]} | pigz --best > $BACKUP
-  echo /bin/ls -ash $BACKUP
-  echo /usr/bin/sha256sum $BACKUP > $BACKUP_SHA
-  echo /usr/bin/sha256sum -c $BACKUP_SHA
-  echo rsync -avp --progress $BACKUP $BACKUP_SHA $BACKUP_DEST_DIR
-  echo rm -rf $BACKUP $BACKUP_SHA
+  tar cfh - $BACKUP_DIR ${BACKUP_SOURCE[@]} | pigz --best > $BACKUP
+  /bin/ls -ash $BACKUP
+  /usr/bin/sha256sum $BACKUP > $BACKUP_SHA
+  /usr/bin/sha256sum -c $BACKUP_SHA
+  rsync -avp --progress $BACKUP $BACKUP_SHA $BACKUP_DEST_DIR
+  rm -rf $BACKUP $BACKUP_SHA
 }
 
 # apt-get upgrade
@@ -154,8 +154,6 @@ case $1 in
   postwork
   ;;
   "--test")
-  disk_stat
-  disk_perf
   backup
   ;;
   "")
