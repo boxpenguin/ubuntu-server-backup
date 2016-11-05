@@ -3,10 +3,10 @@
 # User defined controls
 # Indicate where you would like your web(HTML) Disk storage stats kept (directory)
 DISK_STAT_DIR_WEB=/var/www/html/_admin/Disk_Storage/
-DISK_STAT_WEB_FILE_NAME="Diskstorage"
+DISK_STAT_WEB_FILE_NAME="Disk_storage"
 # Indicate where you would like your web(HTML) Disk performance stats kept (directory)
 DISK_PERF_DIR_WEB=/var/www/html/_admin/Diskstats/
-DISK_PERF_WEB_FILE_NAME="Diskstats"
+DISK_PERF_WEB_FILE_NAME="Disk_performance"
 # Indicate where you would like to store your temp backup files (NCDU)
 BACKUP_DIR=/var/Backup/
 BACKUP_DIR_TEMP=/tmp/
