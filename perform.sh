@@ -52,12 +52,14 @@ NCDU_FILE=3-NCDU-$DATE
 # Pre-script work
 prework () {
   /sbin/stop plexmediaserver
+  /usr/sbin/service pgl stop
   /usr/bin/crontab -r -u root
 }
 
 # post-script work
 postwork () {
   /sbin/start plexmediaserver
+  /usr/sbin/service pgl start
   /usr/bin/crontab -u root /opt/ubuntu-server-backup/crontab.cron
 }
 
@@ -116,7 +118,7 @@ backup () {
 apt_get_up () {
   echo "Starting apt-get updates" #debugging
   /usr/bin/apt-get update > /dev/null 2>&1
-  /usr/bin/apt-get -yq upgrade
+  /usr/bin/apt-get -yq --force-yes upgrade
 }
 
 # apt-get clean up
