@@ -64,9 +64,9 @@ postwork () {
 # Mr Worfs plex updater too required
 plex_upgrade () {
   if [ -e /opt/plexupdate/plexupdate.sh ]; then
-    /opt/plexupdate/plexupdate.sh -p -u -a
+    /opt/plexupdate/plexupdate.sh -u -a
   else
-    echo "No upgrade file found."
+    echo "No upgrade script found."
   fi
 }
 # Disk Storage Stats
@@ -85,15 +85,14 @@ disk_stat () {
 # Disk Performance stats
 disk_perf () {
   echo "Starting performance stats" #debugging
-  echo "Printing disk stats." >> $DISKPERF_WEB
+  echo "Printing disk stats." >> $DISKPERF_FILE
   for i in $(mount | grep /dev/sd | awk '{print substr($1,1, length($1)-1)}' | uniq | sort); do
-    mount | grep $i | awk '{print $1, $2, $3}' >> $DISKPERF_WEB
-    /sbin/hdparm -Tt $i >> $DISKPERF_WEB
-    echo "" >> $DISKPERF_WEB
+    mount | grep $i | awk '{print $1, $2, $3}' >> $DISKPERF_FILE
+    /sbin/hdparm -Tt $i >> $DISKPERF_FILE
+    echo "" >> $DISKPERF_FILE
   done
-  echo "END" >> $DISKPERF_WEB
-  cat $DISKPERF_WEB | /usr/bin/aha --title "Disk Performance" > $DISKPERF_WEB.html
-  rm $DISKPERF_WEB
+  echo "END" >> $DISKPERF_FILE
+  cat $DISKPERF_FILE | /usr/bin/aha --title "Disk Performance" > $DISKPERF_WEB
 }
 
 # NCDU export to backup directories
@@ -110,7 +109,7 @@ backup () {
   /usr/bin/sha256sum $BACKUP > $BACKUP_SHA
   /usr/bin/sha256sum -c $BACKUP_SHA
   rsync -avp --progress $BACKUP $BACKUP_SHA $BACKUP_DEST_DIR
-  rm -rf $BACKUP $BACKUP_SHA
+  rm -rf $BACKUP $BACKUP_SHA $BACKUP_DIR/* # Delete all temp backup files
 }
 
 # apt-get upgrade
