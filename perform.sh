@@ -53,6 +53,7 @@ NCDU_FILE=3-NCDU-$DATE
 prework () {
   /sbin/stop plexmediaserver
   /usr/sbin/service pgl stop
+  /usr/sbin/service plexpy stop
   /usr/bin/crontab -r -u root
 }
 
@@ -60,6 +61,7 @@ prework () {
 postwork () {
   /sbin/start plexmediaserver
   /usr/sbin/service pgl start
+  /usr/sbin/service plexpy stop
   /usr/bin/crontab -u root /opt/ubuntu-server-backup/crontab.cron
 }
 
