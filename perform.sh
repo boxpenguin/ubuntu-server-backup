@@ -136,6 +136,7 @@ case $1 in
   prework
   disk_stat
   disk_perf
+  plex_upgrade
   ncdu
   backup
   apt_get_up
@@ -152,12 +153,13 @@ case $1 in
   ;;
   "--apt-get-up")
   prework
+  plex_upgrade
   apt_get_up
   apt_get_clean
   postwork
   ;;
   "--test")
-  backup
+  echo "Testing, testing."
   ;;
   "")
   echo "--full; performs full backup and ubuntu updates"
