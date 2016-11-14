@@ -67,11 +67,7 @@ postwork () {
 
 # Mr Worfs plex updater too required
 plex_upgrade () {
-  if [ -e /opt/plexupdate/plexupdate.sh ]; then
-    /opt/plexupdate/plexupdate.sh -u -a
-  else
-    echo "No upgrade script found."
-  fi
+  /opt/plexupdate/plexupdate.sh -u -a
 }
 # Disk Storage Stats
 disk_stat () {
